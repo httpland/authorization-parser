@@ -78,6 +78,72 @@ assertThrows(() =>
 );
 ```
 
+## Serialization
+
+Serialize [Authorization](#authorization) into string.
+
+```ts
+import { stringifyAuthorization } from "https://deno.land/x/authorization_parser@$VERSION/stringify.ts";
+import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
+
+assertEquals(
+  stringifyAuthorization({ authScheme: "Basic", params: "token68==" }),
+  "Basic token68",
+);
+assertEquals(
+  stringifyAuthorization({
+    authScheme: "Bearer",
+    params: { realm: `"Secure area"`, error: `"invalid_token"` },
+  }),
+  `Bearer realm="Secure area", error="invalid_token"`,
+);
+```
+
+### Error
+
+Throws an error in the following cases:
+
+- `authScheme` is invalid
+  [auth-scheme](https://www.rfc-editor.org/rfc/rfc9110.html#section-11.1-2)
+- `params` is invalid
+  [token68](https://www.rfc-editor.org/rfc/rfc9110.html#section-11.2-2)
+- `params` key is invalid
+  [token](https://www.rfc-editor.org/rfc/rfc9110.html#section-5.6.2-2)
+- `params` value is invalid
+  [token](https://www.rfc-editor.org/rfc/rfc9110.html#section-5.6.2-2) or
+  [quoted-string](https://www.rfc-editor.org/rfc/rfc9110.html#section-5.6.4-2)
+- There is a duplication in `params` keys(case-insensitive)
+
+```ts
+import { stringifyAuthorization } from "https://deno.land/x/authorization_parser@$VERSION/stringify.ts";
+import { assertThrows } from "https://deno.land/std/testing/asserts.ts";
+
+assertThrows(() =>
+  stringifyAuthorization({ authScheme: "<invalid:auth-scheme>" })
+);
+assertThrows(() =>
+  stringifyAuthorization({ authScheme: "<valid>", params: "<invalid:token68>" })
+);
+assertThrows(() =>
+  stringifyAuthorization({
+    authScheme: "<valid>",
+    params: { "<invalid:token>": "<valid>" },
+  })
+);
+assertThrows(() =>
+  stringifyAuthorization({
+    authScheme: "<valid>",
+    params: { "<valid>": "<invalid:token|quoted-string>" },
+  })
+);
+assertThrows(() =>
+  stringifyAuthorization({
+    authScheme: "<valid>",
+    params: { "<duplicate>": "<valid>", "<DUPLICATE>": "<valid>" },
+  })
+);
+```
+
 ## Authorization
 
 `Authorization` is following structure:

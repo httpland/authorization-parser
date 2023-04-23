@@ -2,4 +2,5 @@
 // This module is browser compatible.
 
 export { parseAuthorization } from "./parse.ts";
-export type { Authorization, AuthParam, Token68 } from "./types.ts";
+export { type AuthorizationLike, stringifyAuthorization } from "./stringify.ts";
+export type { Authorization, AuthParams, Token68 } from "./types.ts";

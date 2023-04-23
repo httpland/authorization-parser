@@ -20,13 +20,13 @@ const reAuthorization =
  *
  * assertEquals(parseAuthorization("Basic token68"), {
  *   authScheme: "Basic",
- *   token: "token68",
+ *   params: "token68",
  * });
  * assertEquals(
  *   parseAuthorization(`Bearer realm="example", error="invalid_token"`),
  *   {
  *     authScheme: "Bearer",
- *     token: {
+ *     params: {
  *       realm: `"example"`,
  *       error: `"invalid_token"`,
  *     },
@@ -44,11 +44,11 @@ export function parseAuthorization(input: string): Authorization {
 
   const groups = result.groups as ParsedGroups;
   const { authScheme } = groups;
-  const authParams = isString(groups.authParam)
+  const params = isString(groups.authParam)
     ? parseAuthParams(groups.authParam)
     : groups.token68;
 
-  return { authScheme, authParams: authParams ?? null };
+  return { authScheme, params: params ?? null };
 }
 
 type ParsedGroups = {

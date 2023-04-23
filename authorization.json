@@ -5,7 +5,7 @@
     "header": "Basic YWxhZGRpbjpvcGVuc2VzYW1l",
     "expected": {
       "authScheme": "Basic",
-      "authParams": "YWxhZGRpbjpvcGVuc2VzYW1l"
+      "params": "YWxhZGRpbjpvcGVuc2VzYW1l"
     }
   },
   {
@@ -14,7 +14,7 @@
     "header": "Bearer realm=\"example\", error=\"invalid_token\", error_description=\"The access token expired\"",
     "expected": {
       "authScheme": "Bearer",
-      "authParams": {
+      "params": {
         "realm": "\"example\"",
         "error": "\"invalid_token\"",
         "error_description": "\"The access token expired\""
@@ -27,7 +27,7 @@
     "header": "Digest username=\"Mufasa\", realm=\"http-auth@example.org\", uri=\"/dir/index.html\", algorithm=SHA-256, nonce=\"7ypf/xlj9XXwfDPEoM4URrv/xwf94BcCAzFZH4GiTo0v\", nc=00000001, cnonce=\"f2/wE4q74E6zIJEtWaHKaf5wv/H5QzzpXusqGemxURZJ\", qop=auth, response=\"753927fa0e85d155564e2e272a28d1802ca10daf4496794697cf8db5856cb6c1\", opaque=\"FQhe/qaU925kfnzjCev0ciny7QMkPqMAFRtzCUYo5tdS\"",
     "expected": {
       "authScheme": "Digest",
-      "authParams": {
+      "params": {
         "username": "\"Mufasa\"",
         "realm": "\"http-auth@example.org\"",
         "uri": "\"/dir/index.html\"",
@@ -47,7 +47,7 @@
     "ref": "https://datatracker.ietf.org/doc/html/rfc7616#section-3.9.2",
     "expected": {
       "authScheme": "Digest",
-      "authParams": {
+      "params": {
         "username": "\"488869477bf257147b804c45308cd62ac4e25eb717b12b298c79e62dcea254ec\"",
         "realm": "\"api@example.org\"",
         "uri": "\"/doe.json\"",
@@ -68,7 +68,7 @@
     "ref": "https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-auth-using-authorization-header.html",
     "expected": {
       "authScheme": "AWS4-HMAC-SHA256",
-      "authParams": {
+      "params": {
         "Credential": "\"AKIAIOSFODNN7EXAMPLE/20130524/us-east-1/s3/aws4_request\"",
         "SignedHeaders": "\"host;range;x-amz-date\"",
         "Signature": "fe5f80f77d5fa3beca038a248ff027d0445342fe2855ddc963176630326f1024"

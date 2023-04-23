@@ -1,4 +1,4 @@
-# authorization-parser
+# auth-parser
 
 [![deno land](http://img.shields.io/badge/available%20on-deno.land/x-lightgrey.svg?logo=deno)](https://deno.land/x/authorization_parser)
 [![deno doc](https://doc.deno.land/badge.svg)](https://doc.deno.land/https/deno.land/x/authorization_parser/mod.ts)
@@ -9,7 +9,8 @@
 [![test](https://github.com/httpland/authorization-parser/actions/workflows/test.yaml/badge.svg)](https://github.com/httpland/authorization-parser/actions/workflows/test.yaml)
 [![NPM](https://nodei.co/npm/@httpland/authorization-parser.png?mini=true)](https://nodei.co/npm/@httpland/authorization-parser/)
 
-HTTP `Authorization` field parser and serializer.
+HTTP Authentication and Authorization `Authorization` field parser and
+serializer.
 
 Compliant with
 [RFC 9110, 11.6.2. Authorization](https://www.rfc-editor.org/rfc/rfc9110.html#section-11.6.2).
@@ -26,13 +27,13 @@ const result = parseAuthorization("Basic token68");
 
 assertEquals(parseAuthorization("Basic token68"), {
   authScheme: "Basic",
-  token: "token68",
+  params: "token68",
 });
 assertEquals(
   parseAuthorization(`Bearer realm="example", error="invalid_token"`),
   {
     authScheme: "Bearer",
-    token: {
+    params: {
       realm: `"example"`,
       error: `"invalid_token"`,
     },
@@ -81,10 +82,10 @@ assertThrows(() =>
 
 `Authorization` is following structure:
 
-| Name       | Type                                       | Description            |
-| ---------- | ------------------------------------------ | ---------------------- |
-| authScheme | `string`                                   | Authentication scheme. |
-| token      | `Token68` &#124; `AuthParam` &#124; `null` | token68 or auth-param. |
+| Name       | Type                                        | Description            |
+| ---------- | ------------------------------------------- | ---------------------- |
+| authScheme | `string`                                    | Authentication scheme. |
+| params     | `Token68` &#124; `AuthParams` &#124; `null` | token68 or auth-param. |
 
 ### Token68
 
@@ -95,12 +96,12 @@ so that it can hold a base64, base64url (URL and filename safe alphabet),
 base32, or base16 (hex) encoding, with or without padding, but excluding
 whitespace.
 
-### AuthParam
+### AuthParams
 
 It is name/value pairs.
 
 ```ts
-interface AuthParam {
+interface AuthParams {
   readonly [k: string]: string;
 }
 ```

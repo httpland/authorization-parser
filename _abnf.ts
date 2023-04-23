@@ -6,6 +6,7 @@ import {
   sequence,
   suffix,
 } from "npm:compose-regexp";
+import { optimize } from "https://esm.sh/regexp-tree";
 
 const tchar = /[!#$%&'*+.^_`|~\dA-Za-z-]/;
 const token = suffix("+", tchar);
@@ -61,4 +62,10 @@ if (import.meta.main) {
   console.log("challenge:", challenge);
   console.log("element: ", element);
   console.log("authParam: ", authParam);
+  console.log("token: ", optimize(token).toRegExp());
+  console.log("token68: ", optimize(token68).toRegExp());
+  console.log(
+    "quoted-string: ",
+    optimize(quotedString).toRegExp(),
+  );
 }

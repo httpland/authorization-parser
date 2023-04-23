@@ -1,7 +1,7 @@
 // Copyright 2023-latest the httpland authors. All rights reserved. MIT license.
 // This module is browser compatible.
 
-import { duplicate, parseListField } from "./utils.ts";
+import { duplicate, parseList } from "./utils.ts";
 import { head, toLowerCase } from "./deps.ts";
 import type { Authorization, AuthParam } from "./types.ts";
 
@@ -36,7 +36,7 @@ const reAuthParam =
  * @throws {Error} If the auth param key is duplicated.
  */
 export function parseAuthParam(input: string): AuthParam {
-  const list = parseListField(input);
+  const list = parseList(input);
 
   const entries = list.map((el) => {
     const result = reAuthParam.exec(el);

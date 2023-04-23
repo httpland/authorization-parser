@@ -1,4 +1,4 @@
-import { parseAuthorization, parseAuthParam } from "./parse.ts";
+import { parseAuthorization, parseAuthParams } from "./parse.ts";
 import {
   assertEquals,
   assertIsError,
@@ -49,14 +49,14 @@ describe("parseAuthorization", () => {
   });
 });
 
-describe("parseAuthParam", () => {
+describe("parseAuthParams", () => {
   authParam.forEach((v) => {
     it(v.name, () => {
       if (v.must_fail) {
-        assertThrows(() => parseAuthParam(v.header));
+        assertThrows(() => parseAuthParams(v.header));
       } else {
         assertEquals<Record<string, unknown>>(
-          parseAuthParam(v.header),
+          parseAuthParams(v.header),
           v.expected!,
         );
       }

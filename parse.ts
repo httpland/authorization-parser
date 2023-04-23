@@ -2,13 +2,9 @@
 // This module is browser compatible.
 
 import { duplicate, parseList } from "./utils.ts";
-import { head, toLowerCase } from "./deps.ts";
-import type { Authorization, AuthParam } from "./types.ts";
-
-const enum Msg {
-  InvalidSyntax = "unexpected Authorization input",
-  DuplicatedKeys = "auth param keys should be case insensitive unique",
-}
+import { head, isString, toLowerCase } from "./deps.ts";
+import { Msg } from "./constants.ts";
+import type { Authorization, AuthParams } from "./types.ts";
 
 const reAuthorization =
   /^(?<authScheme>[!#$%&'*+.^_`|~\dA-Za-z-]+)(?: +(?:(?<token68>(?:[A-Za-z]|\d|[-._~+/])+=*)|(?<authParam>.+)))?$/;
@@ -46,11 +42,20 @@ export function parseAuthorization(input: string): Authorization {
 
   if (!result || !result.groups) throw SyntaxError(Msg.InvalidSyntax);
 
-  const { authScheme, token68, authParam: authParamStr } = result.groups;
-  const token = authParamStr ? parseAuthParam(authParamStr) : token68 ?? null;
+  const groups = result.groups as ParsedGroups;
+  const { authScheme } = groups;
+  const authParams = isString(groups.authParam)
+    ? parseAuthParams(groups.authParam)
+    : groups.token68;
 
-  return { authScheme: authScheme!, token };
+  return { authScheme, authParams: authParams ?? null };
 }
+
+type ParsedGroups = {
+  readonly authScheme: string;
+  readonly token68: string | undefined;
+  readonly authParam: string | undefined;
+};
 
 const reAuthParam =
   /^(?<key>[!#$%&'*+.^_`|~\dA-Za-z-]+)[ \t]*=[ \t]*(?<value>[!#$%&'*+.^_`|~\dA-Za-z-]+|"(?:\t| |!|[\x23-\x5B/, /[\x5D-\x7E]|[\x80-\xFF]|\\(?:\t| |[\x21-\x7E])[\x80-\xFF])*")$/;
@@ -58,7 +63,7 @@ const reAuthParam =
 /** Parse string into {@link AuthParam}.
  * @throws {Error} If the auth param key is duplicated.
  */
-export function parseAuthParam(input: string): AuthParam {
+export function parseAuthParams(input: string): AuthParams {
   const list = parseList(input);
 
   const entries = list.map((el) => {

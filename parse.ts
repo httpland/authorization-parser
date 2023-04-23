@@ -15,6 +15,29 @@ const reAuthorization =
 
 /** Parse string into {@link Authorization}.
  *
+ * @example
+ * ```ts
+ * import { parseAuthorization } from "https://deno.land/x/authorization_parser@$VERSION/parse.ts";
+ * import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
+ *
+ * const result = parseAuthorization("Basic token68");
+ *
+ * assertEquals(parseAuthorization("Basic token68"), {
+ *   authScheme: "Basic",
+ *   token: "token68",
+ * });
+ * assertEquals(
+ *   parseAuthorization(`Bearer realm="example", error="invalid_token"`),
+ *   {
+ *     authScheme: "Bearer",
+ *     token: {
+ *       realm: `"example"`,
+ *       error: `"invalid_token"`,
+ *     },
+ *   },
+ * );
+ * ```
+ *
  * @throws {SyntaxError} If the input is invalid.
  * @throws {Error} If the auth param key is duplicated.
  */

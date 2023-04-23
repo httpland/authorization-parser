@@ -1,3 +1,12 @@
+# [1.0.0-beta.2](https://github.com/httpland/authorization-parser/compare/1.0.0-beta.1...1.0.0-beta.2) (2023-04-23)
+
+
+### Features
+
+* **stringify:** add serializer for authrization ([076395a](https://github.com/httpland/authorization-parser/commit/076395aea41a5531fe7becb8379691ccce748766))
+* **types:** rename field to `authParams` ([f2f15b4](https://github.com/httpland/authorization-parser/commit/f2f15b42220b0d96fbcbb3ee46adc516bb639c1b))
+* **types:** rename field to `params` ([0a51170](https://github.com/httpland/authorization-parser/commit/0a51170c9f0fdb04f8315c364c499fc160ca399e))
+
 # 1.0.0-beta.1 (2023-04-23)
 
 

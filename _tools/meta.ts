@@ -54,5 +54,15 @@ export const makeOptions = (version: string): BuildOptions => ({
       version: "1.2.0",
       subPath: "head.js",
     },
+    "https://deno.land/x/isx@1.3.1/is_string.ts": {
+      name: "@miyauci/isx",
+      version: "1.3.1",
+      subPath: "is_string.js",
+    },
+    "https://deno.land/x/isx@1.3.1/is_nullable.ts": {
+      name: "@miyauci/isx",
+      version: "1.3.1",
+      subPath: "is_nullable.js",
+    },
   },
 });

@@ -1,0 +1,37 @@
+[
+  {
+    "name": "empty",
+    "header": "",
+    "expected": {}
+  },
+  {
+    "name": "simple auth param",
+    "header": "a=a",
+    "expected": { "a": "a" }
+  },
+  {
+    "name": "multiple auth param",
+    "header": "a=a, b=b, c=c",
+    "expected": { "a": "a", "b": "b", "c": "c" }
+  },
+  {
+    "name": "dirty auth param",
+    "header": "a=a,b=b, c=c ,  d=d  ,   e=e   ",
+    "expected": { "a": "a", "b": "b", "c": "c", "d": "d", "e": "e" }
+  },
+  {
+    "name": "duplicate key",
+    "header": "a=a,a=a",
+    "must_fail": true
+  },
+  {
+    "name": "duplicate key with case insensitive",
+    "header": "a=a,A=a",
+    "must_fail": true
+  },
+  {
+    "name": "invalid format",
+    "header": "YWxhZGRpbjpvcGVuc2VzYW1l a=a",
+    "must_fail": true
+  }
+]

@@ -1,0 +1,16 @@
+{
+  "version": "2",
+  "remote": {
+    "https://deno.land/std@0.184.0/fmt/colors.ts": "d67e3cd9f472535241a8e410d33423980bec45047e343577554d3356e1f0ef4e",
+    "https://deno.land/std@0.184.0/testing/_diff.ts": "1a3c044aedf77647d6cac86b798c6417603361b66b54c53331b312caeb447aea",
+    "https://deno.land/std@0.184.0/testing/_format.ts": "a69126e8a469009adf4cf2a50af889aca364c349797e63174884a52ff75cf4c7",
+    "https://deno.land/std@0.184.0/testing/_test_suite.ts": "30f018feeb3835f12ab198d8a518f9089b1bcb2e8c838a8b615ab10d5005465c",
+    "https://deno.land/std@0.184.0/testing/asserts.ts": "e16d98b4d73ffc4ed498d717307a12500ae4f2cbe668f1a215632d19fcffc22f",
+    "https://deno.land/std@0.184.0/testing/bdd.ts": "59f7f7503066d66a12e50ace81bfffae5b735b6be1208f5684b630ae6b4de1d0",
+    "https://deno.land/x/isx@1.1.1/is_string.ts": "268254eab5f8dbc09ee879eb53675813cdc5350207dde436d457cb34462cc857",
+    "https://deno.land/x/prelude_js@1.2.0/deps.ts": "4f59609c3bd00576fdbf618df45e433b4f6e862c2c905a442d9564be20fae322",
+    "https://deno.land/x/prelude_js@1.2.0/head.ts": "8f5908cd5cc03ef783feff0d0373371e239237f6a6fd2e1849cd6dc3d4d609b3",
+    "https://deno.land/x/prelude_js@1.2.0/to_lower_case.ts": "869038443b99f156649dafe8c05f69b8c7168e22ba64c37f57042b11ebaf47e0",
+    "https://deno.land/x/prelude_js@1.2.0/trim.ts": "9e839053220bee1c5673026ccf4ddba475c3b982b3284b1d6b86e5440821de61"
+  }
+}

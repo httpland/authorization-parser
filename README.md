@@ -1,4 +1,4 @@
-# auth-parser
+# authorization-parser
 
 [![deno land](http://img.shields.io/badge/available%20on-deno.land/x-lightgrey.svg?logo=deno)](https://deno.land/x/authorization_parser)
 [![deno doc](https://doc.deno.land/badge.svg)](https://doc.deno.land/https/deno.land/x/authorization_parser/mod.ts)
@@ -171,6 +171,14 @@ interface AuthParams {
   readonly [k: string]: string;
 }
 ```
+
+## Compatibility
+
+[parser](#parsing) is compatible with
+[RFC 9110, 11.3. Challenge and Response](https://www.rfc-editor.org/rfc/rfc9110.html#section-11.3)
+and
+[RFC 9110, 11.4. Credentials](https://www.rfc-editor.org/rfc/rfc9110.html#section-11.4)
+syntax and can be used in the same way.
 
 ## API
 

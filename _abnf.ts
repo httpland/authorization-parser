@@ -1,5 +1,4 @@
 import {
-  capture,
   either,
   maybe,
   namedCapture,
@@ -42,7 +41,7 @@ const obsText = /[\x80-\xFF]/;
 const HTAB = /\t/;
 const qdtext = either(HTAB, SP, "\x21", /[\x23-\x5B/, /[\x5D-\x7E]/, obsText);
 const VCHAR = /[\x21-\x7E]/;
-const quotedPair = sequence("\\", either(HTAB, SP, VCHAR), obsText);
+const quotedPair = sequence("\\", either(HTAB, SP, VCHAR, obsText));
 
 const quotedString = sequence(
   DQUOTE,
@@ -55,13 +54,16 @@ const authParam = sequence(
   BWS,
   "=",
   BWS,
-  capture(either(token, quotedString)),
+  either(
+    namedCapture("token", token),
+    namedCapture("quotedString", quotedString),
+  ),
 );
 
 if (import.meta.main) {
   console.log("challenge:", challenge);
   console.log("element: ", element);
-  console.log("authParam: ", authParam);
+  console.log("authParam: ", optimize(authParam).toRegExp());
   console.log("token: ", optimize(token).toRegExp());
   console.log("token68: ", optimize(token68).toRegExp());
   console.log(

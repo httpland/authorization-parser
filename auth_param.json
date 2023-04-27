@@ -20,6 +20,23 @@
     "expected": { "a": "a", "b": "b", "c": "c", "d": "d", "e": "e" }
   },
   {
+    "name": "all char",
+    "header": "a=abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    "expected": {
+      "a": "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    }
+  },
+  {
+    "name": "quoted-string",
+    "header": "a=\"a\", b=\"b\"",
+    "expected": { "a": "\"a\"", "b": "\"b\"" }
+  },
+  {
+    "name": "quoted-pair",
+    "header": "a=\"\\a\", b=\"\\\\\"",
+    "expected": { "a": "\"a\"", "b": "\"\\\"" }
+  },
+  {
     "name": "duplicate key",
     "header": "a=a,a=a",
     "must_fail": true
@@ -32,6 +49,16 @@
   {
     "name": "invalid format",
     "header": "YWxhZGRpbjpvcGVuc2VzYW1l a=a",
+    "must_fail": true
+  },
+  {
+    "name": "invalid quoted-string",
+    "header": "a=\u0000",
+    "must_fail": true
+  },
+  {
+    "name": "invalid quoted-pair",
+    "header": "a=\"\u0000\"",
     "must_fail": true
   }
 ]

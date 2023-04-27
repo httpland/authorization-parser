@@ -58,9 +58,17 @@ type ParsedGroups = {
 };
 
 const reAuthParam =
-  /^(?<key>[!#$%&'*+.^_`|~\dA-Za-z-]+)[ \t]*=[ \t]*(?<value>[!#$%&'*+.^_`|~\dA-Za-z-]+|"(?:\t| |!|[\x23-\x5B/, /[\x5D-\x7E]|[\x80-\xFF]|\\(?:\t| |[\x21-\x7E])[\x80-\xFF])*")$/;
+  /^(?<key>[\w!#$%&'*+.^`|~-]+)[\t ]*=[\t ]*(?:(?<token>[\w!#$%&'*+.^`|~-]+)|(?<quotedString>"(?:\t| |!|[ \x23-\x5B\x5D-\x7E]|[\x80-\xFF]|\\(?:\t| |[\x21-\x7E]|[\x80-\xFF]))*"))$/;
+
+type AuthParamGroups =
+  & { key: string }
+  & ({ token: string; quotedString: never } | {
+    token: never;
+    quotedString: string;
+  });
 
 /** Parse string into {@link AuthParam}.
+ * @throws {SyntaxError} It the input is invalid [auth-param](https://www.rfc-editor.org/rfc/rfc9110.html#section-11.2-5).
  * @throws {Error} If the auth param key is duplicated.
  */
 export function parseAuthParams(input: string): AuthParams {
@@ -71,7 +79,12 @@ export function parseAuthParams(input: string): AuthParams {
 
     if (!result || !result.groups) throw SyntaxError(Msg.InvalidSyntax);
 
-    return [result.groups.key, result.groups.value] as const;
+    const groups = result.groups as AuthParamGroups;
+    const value = isString(groups.token)
+      ? groups.token
+      : groups.quotedString.replace(/\\(.)/g, "$1");
+
+    return [groups.key, value] as const;
   });
 
   const duplicates = duplicate(

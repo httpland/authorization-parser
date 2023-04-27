@@ -15,12 +15,12 @@ export function duplicate<T>(list: readonly T[]): T[] {
   return [...duplicates];
 }
 
-const reCommaSplitWithoutDquote = /,(?=(?:(?:[^"]*"){2})*[^"]*$)/;
+const reCommaSplitWithoutDQuote = /,(?=(?:(?:[^"]*"){2})*[^"]*$)/;
 
 /** Parse string into list-based field. */
 export function parseList(input: string): string[] {
   return input
-    .split(reCommaSplitWithoutDquote)
+    .split(reCommaSplitWithoutDQuote)
     .map(trim)
     .filter(Boolean);
 }

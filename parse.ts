@@ -6,8 +6,9 @@ import { head, isString, toLowerCase } from "./deps.ts";
 import { Msg } from "./constants.ts";
 import type { Authorization, AuthParams } from "./types.ts";
 
+/** Generate from _abnf.ts. */
 const reAuthorization =
-  /^(?<authScheme>[!#$%&'*+.^_`|~\dA-Za-z-]+)(?: +(?:(?<token68>(?:[A-Za-z]|\d|[-._~+/])+=*)|(?<authParam>.+)))?$/;
+  /^(?<authScheme>[\w!#$%&'*+.^`|~-]+)(?: +(?:(?<token68>(?:[A-Za-z]|\d|[+./_~-])+=*)|(?<authParam>.*)))?$/;
 
 /** Parse string into {@link Authorization}.
  *
@@ -57,6 +58,7 @@ type ParsedGroups = {
   readonly authParam: string | undefined;
 };
 
+/** Generate from _abnf.ts. */
 const reAuthParam =
   /^(?<key>[\w!#$%&'*+.^`|~-]+)[\t ]*=[\t ]*(?:(?<token>[\w!#$%&'*+.^`|~-]+)|(?<quotedString>"(?:\t| |!|[ \x23-\x5B\x5D-\x7E]|[\x80-\xFF]|\\(?:\t| |[\x21-\x7E]|[\x80-\xFF]))*"))$/;
 

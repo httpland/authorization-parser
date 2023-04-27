@@ -51,9 +51,11 @@ describe("stringifyAuthorization", () => {
   authorization.forEach((suite) => {
     it(suite.name, () => {
       if (!suite.must_fail) {
+        const input = suite.normalize ?? suite.header;
+
         assertEquals(
           stringifyAuthorization(suite.expected as Authorization),
-          suite.header,
+          input,
         );
       }
     });

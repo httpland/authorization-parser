@@ -1,5 +1,22 @@
 [
   {
+    "name": "no params",
+    "header": "A",
+    "expected": {
+      "authScheme": "A",
+      "params": null
+    }
+  },
+  {
+    "name": "empty params",
+    "header": "B ",
+    "expected": {
+      "authScheme": "B",
+      "params": {}
+    },
+    "normalize": "B"
+  },
+  {
     "name": "basic",
     "ref": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization#basic_authentication",
     "header": "Basic YWxhZGRpbjpvcGVuc2VzYW1l",

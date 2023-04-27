@@ -57,8 +57,13 @@
     "must_fail": true
   },
   {
-    "name": "invalid quoted-pair",
+    "name": "invalid quoted-pair char",
     "header": "a=\"\u0000\"",
+    "must_fail": true
+  },
+  {
+    "name": "invalid quoted-pair syntax",
+    "header": "a=\"a\\\"",
     "must_fail": true
   }
 ]

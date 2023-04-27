@@ -24,7 +24,7 @@ const challenge = sequence(
     suffix("+", SP),
     either(
       namedCapture("token68", token68),
-      namedCapture("authParam", /.+/),
+      namedCapture("authParam", /.*/),
     ),
   ),
 );
@@ -61,7 +61,7 @@ const authParam = sequence(
 );
 
 if (import.meta.main) {
-  console.log("challenge:", challenge);
+  console.log("challenge:", optimize(challenge).toRegExp());
   console.log("element: ", element);
   console.log("authParam: ", optimize(authParam).toRegExp());
   console.log("token: ", optimize(token).toRegExp());

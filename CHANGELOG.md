@@ -1,3 +1,11 @@
+# [1.0.0-beta.3](https://github.com/httpland/authorization-parser/compare/1.0.0-beta.2...1.0.0-beta.3) (2023-04-27)
+
+
+### Bug Fixes
+
+* **parse:** fix auth param regex pattern ([8046b0d](https://github.com/httpland/authorization-parser/commit/8046b0d1660fd40e90e4ef68dc4a435f816b06ef))
+* **parse:** fix to parsing pattern ([c8ee900](https://github.com/httpland/authorization-parser/commit/c8ee900b37bc860ba20ef026f2b59daf1e409bf3))
+
 # [1.0.0-beta.2](https://github.com/httpland/authorization-parser/compare/1.0.0-beta.1...1.0.0-beta.2) (2023-04-23)
 
 

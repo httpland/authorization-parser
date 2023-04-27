@@ -9,8 +9,7 @@
 [![test](https://github.com/httpland/authorization-parser/actions/workflows/test.yaml/badge.svg)](https://github.com/httpland/authorization-parser/actions/workflows/test.yaml)
 [![NPM](https://nodei.co/npm/@httpland/authorization-parser.png?mini=true)](https://nodei.co/npm/@httpland/authorization-parser/)
 
-HTTP Authentication and Authorization `Authorization` field parser and
-serializer.
+HTTP Authorization field parser and serializer.
 
 Compliant with
 [RFC 9110, 11.6.2. Authorization](https://www.rfc-editor.org/rfc/rfc9110.html#section-11.6.2).

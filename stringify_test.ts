@@ -1,4 +1,11 @@
-import { AuthorizationLike, stringifyAuthorization } from "./stringify.ts";
+import {
+  AuthorizationLike,
+  escapeOctet,
+  isQuoted,
+  stringifyAuthorization,
+  stringifyAuthParams,
+  trimChar,
+} from "./stringify.ts";
 import {
   assertEquals,
   assertThrows,
@@ -6,8 +13,23 @@ import {
   describe,
   it,
 } from "./_dev_deps.ts";
-
 import authorization from "./authorization.json" assert { type: "json" };
+import authParam from "./auth_param.json" assert { type: "json" };
+
+describe("stringifyAuthParams", () => {
+  authParam.forEach((v) => {
+    it(v.name, () => {
+      if (!v.must_fail && v.expected) {
+        const input = v.canonical ? v.canonical : v.header;
+
+        assertEquals(
+          stringifyAuthParams(v.expected as Record<string, string>),
+          input,
+        );
+      }
+    });
+  });
+});
 
 describe("stringifyAuthorization", () => {
   it("should return string if the input is valid", () => {
@@ -58,6 +80,100 @@ describe("stringifyAuthorization", () => {
           input,
         );
       }
+    });
+  });
+});
+
+describe("escapeOctet", () => {
+  it("should escape double quote and backslash", () => {
+    const table: [string, string][] = [
+      ["", ""],
+      ["a", "a"],
+      [`\\"`, `\\"`],
+      [`""`, `\\"\\"`],
+      [`"\\"`, `\\"\\"`],
+      [`\\"\\"`, `\\"\\"`],
+      [`"""`, `\\"\\"\\"`],
+      [`""""`, `\\"\\"\\"\\"`],
+      [`"`, `\\"`],
+      [`"a"`, `\\"a\\"`],
+      [`a\\`, `a\\\\`],
+      [`a"`, `a\\"`],
+      [`a\\"`, `a\\"`],
+      [`\\\\`, `\\\\`],
+      [`\\\\\\`, `\\\\\\\\`],
+      [`\\\\\\\\`, `\\\\\\\\`],
+      [`\\`, `\\\\`],
+      ['"\\"', `\\"\\"`],
+      ['\\\\\\"', `\\\\\\"`],
+    ];
+
+    table.forEach(([input, expected]) => {
+      assertEquals(escapeOctet(input), expected);
+    });
+  });
+});
+
+describe("escapeOctet", () => {
+  it("should escape double quote and backslash", () => {
+    const table: [string, string][] = [
+      ["", ""],
+      ["a", "a"],
+      [`\\"`, `\\"`],
+      [`""`, `\\"\\"`],
+      [`"\\"`, `\\"\\"`],
+      [`\\"\\"`, `\\"\\"`],
+      [`"""`, `\\"\\"\\"`],
+      [`""""`, `\\"\\"\\"\\"`],
+      [`"`, `\\"`],
+      [`"a"`, `\\"a\\"`],
+      [`a\\`, `a\\\\`],
+      [`a"`, `a\\"`],
+      [`a\\"`, `a\\"`],
+      [`\\\\`, `\\\\`],
+      [`\\\\\\`, `\\\\\\\\`],
+      [`\\\\\\\\`, `\\\\\\\\`],
+      [`\\`, `\\\\`],
+      ['"\\"', `\\"\\"`],
+      ['\\\\\\"', `\\\\\\"`],
+    ];
+
+    table.forEach(([input, expected]) => {
+      assertEquals(escapeOctet(input), expected);
+    });
+  });
+});
+
+describe("isQuoted", () => {
+  it("should pass", () => {
+    const table: [string, boolean][] = [
+      ["a", false],
+      ["ab", false],
+      [`"`, false],
+      [` ""`, false],
+      [`""`, true],
+      [`"a"`, true],
+      [`""""`, true],
+      [`"""`, true],
+    ];
+
+    table.forEach(([input, expected]) => {
+      assertEquals(isQuoted(input), expected);
+    });
+  });
+});
+
+describe("trimChar", () => {
+  it("should pass", () => {
+    const table: [string, string][] = [
+      ["a", ""],
+      ["ab", ""],
+      ["abc", "b"],
+      ["abcd", "bc"],
+    ];
+
+    table.forEach(([input, expected]) => {
+      assertEquals(trimChar(input), expected);
     });
   });
 });

@@ -1,7 +1,7 @@
 // Copyright 2023-latest the httpland authors. All rights reserved. MIT license.
 // This module is browser compatible.
 
-import { isNullable, isString, toLowerCase } from "./deps.ts";
+import { isNullable, isString, mapValues, toLowerCase } from "./deps.ts";
 import { duplicate } from "./utils.ts";
 import { Msg } from "./constants.ts";
 import type { Authorization, AuthParams } from "./types.ts";
@@ -75,7 +75,7 @@ export function assertToken68(
 }
 
 const reQuotedString =
-  /^"(?:\t| |!|[ \x23-\x5B\x5D-\x7E]|[\x80-\xFF]|\\(?:\t| |[\x21-\x7E])[\x80-\xFF])*"$/;
+  /^"(?:\t| |!|[ \x23-\x5B\x5D-\x7E]|[\x80-\xFF]|\\(?:\t| |[\x21-\x7E]|[\x80-\xFF]))*"$/;
 
 export function isQuotedString(input: string): boolean {
   return reQuotedString.test(input);
@@ -98,12 +98,39 @@ function assertAuthParam(input: AuthParams): asserts input {
 }
 
 export function stringifyAuthParams(input: AuthParams): string {
+  input = mapValues(input, normalizeParameterValue);
+
   assertAuthParam(input);
 
   return Object
     .entries(input)
     .map(joinEntry)
     .join(", ");
+}
+
+export function normalizeParameterValue(input: string): string {
+  return isQuoted(input) ? `"${escapeOctet(trimChar(input))}"` : input;
+}
+
+/** Escape DQuote and Backslash.
+ * Skip escaped.
+ * @see https://www.rfc-editor.org/rfc/rfc9110.html#section-5.6.4-5
+ */
+export function escapeOctet(input: string): string {
+  // TODO(miyauci): dirty
+  return input
+    .replaceAll(`"`, `\\"`)
+    .replaceAll("\\", "\\\\")
+    .replaceAll("\\\\\\\\", "\\\\")
+    .replaceAll(`\\\\"`, '\\"');
+}
+
+export function isQuoted(input: string): input is `"${string}"` {
+  return /^".*"$/.test(input);
+}
+
+export function trimChar(input: string): string {
+  return input.slice(1, -1);
 }
 
 function joinEntry(

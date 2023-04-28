@@ -1,3 +1,10 @@
+# [1.0.0-beta.5](https://github.com/httpland/authorization-parser/compare/1.0.0-beta.4...1.0.0-beta.5) (2023-04-28)
+
+
+### Bug Fixes
+
+* improve regex pattern to avoid backtracking ([9300c93](https://github.com/httpland/authorization-parser/commit/9300c931a40a9588e617b7f23939049d4e99a6ba))
+
 # [1.0.0-beta.4](https://github.com/httpland/authorization-parser/compare/1.0.0-beta.3...1.0.0-beta.4) (2023-04-28)
 
 

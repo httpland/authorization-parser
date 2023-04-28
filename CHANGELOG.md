@@ -1,3 +1,10 @@
+# [1.0.0-beta.4](https://github.com/httpland/authorization-parser/compare/1.0.0-beta.3...1.0.0-beta.4) (2023-04-28)
+
+
+### Features
+
+* **stringify:** add escape for quoted-pair ([5f1bba4](https://github.com/httpland/authorization-parser/commit/5f1bba43512f61efdd3b9c875e275acf32cf6ebf))
+
 # [1.0.0-beta.3](https://github.com/httpland/authorization-parser/compare/1.0.0-beta.2...1.0.0-beta.3) (2023-04-27)
 
 

@@ -173,7 +173,7 @@ interface AuthParams {
 
 ## Compatibility
 
-[parser](#parsing) is compatible with
+[parser](#parsing) and [serializer](#serialization) are compatible with
 [RFC 9110, 11.3. Challenge and Response](https://www.rfc-editor.org/rfc/rfc9110.html#section-11.3)
 and
 [RFC 9110, 11.4. Credentials](https://www.rfc-editor.org/rfc/rfc9110.html#section-11.4)

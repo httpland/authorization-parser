@@ -6,6 +6,7 @@ import { duplicate } from "./utils.ts";
 import { Msg } from "./constants.ts";
 import type { Authorization, AuthParams } from "./types.ts";
 
+/** {@link Authorization} like API. */
 export interface AuthorizationLike
   extends
     Pick<Authorization, "authScheme">,

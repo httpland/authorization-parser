@@ -8,7 +8,7 @@ import type { Authorization, AuthParams } from "./types.ts";
 
 /** Generate from _abnf.ts. */
 const reAuthorization =
-  /^(?<authScheme>[\w!#$%&'*+.^`|~-]+)(?: +(?:(?<token68>(?:[A-Za-z]|\d|[+./_~-])+=*)|(?<authParam>.*)))?$/;
+  /^(?<authScheme>(?=([\w!#$%&'*+.^`|~-]+))\2)(?:(?=( +))\3(?:(?<token68>(?=((?:[A-Za-z]|\d|[+./_~-])+))\5(?=(=*))\6)|(?<authParam>(?=(.*))\8)))?$/;
 
 /** Parse string into {@link Authorization}.
  *
@@ -60,7 +60,7 @@ type ParsedGroups = {
 
 /** Generate from _abnf.ts. */
 const reAuthParam =
-  /^(?<key>[\w!#$%&'*+.^`|~-]+)[\t ]*=[\t ]*(?:(?<token>[\w!#$%&'*+.^`|~-]+)|(?<quotedString>"(?:\t| |!|[ \x23-\x5B\x5D-\x7E]|[\x80-\xFF]|\\(?:\t| |[\x21-\x7E]|[\x80-\xFF]))*"))$/;
+  /^(?<key>(?=([\w!#$%&'*+.^`|~-]+))\2)[\t ]*=[\t ]*(?:(?<token>(?=([\w!#$%&'*+.^`|~-]+))\4)|(?<quotedString>"(?=((?:\t| |!|[ \x23-\x5B\x5D-\x7E]|[\x80-\xFF]|\\(?:\t| |[\x21-\x7E]|[\x80-\xFF]))*))\6"))$/;
 
 type AuthParamGroups =
   & { key: string }

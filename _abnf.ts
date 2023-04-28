@@ -1,4 +1,5 @@
 import {
+  atomic,
   either,
   maybe,
   namedCapture,
@@ -8,23 +9,23 @@ import {
 import { optimize } from "https://esm.sh/regexp-tree";
 
 const tchar = /[!#$%&'*+.^_`|~\dA-Za-z-]/;
-const token = suffix("+", tchar);
+const token = atomic(suffix("+", tchar));
 const authScheme = namedCapture("authScheme", token);
 const SP = / /;
 const ALPHA = /[A-Za-z]/;
 const DIGIT = /\d/;
 const token68 = sequence(
-  suffix("+", either(ALPHA, DIGIT, /[-._~+/]/)),
-  suffix("*", "="),
+  atomic(suffix("+", either(ALPHA, DIGIT, /[-._~+/]/))),
+  atomic(suffix("*", "=")),
 );
 
 const challenge = sequence(
   authScheme,
   maybe(
-    suffix("+", SP),
+    atomic(suffix("+", SP)),
     either(
       namedCapture("token68", token68),
-      namedCapture("authParam", /.*/),
+      namedCapture("authParam", atomic(/.*/)),
     ),
   ),
 );
@@ -33,7 +34,9 @@ const OWS = /[ \t]*/;
 const BWS = OWS;
 
 const element = sequence(
-  maybe(/.*?/, suffix("*", OWS, ",", OWS, maybe(/.*?/))),
+  atomic(
+    maybe(atomic(/.*?/), atomic(suffix("*", OWS, ",", OWS, maybe(/.*?/)))),
+  ),
 );
 
 const DQUOTE = /"/;
@@ -45,7 +48,7 @@ const quotedPair = sequence("\\", either(HTAB, SP, VCHAR, obsText));
 
 const quotedString = sequence(
   DQUOTE,
-  suffix("*", either(qdtext, quotedPair)),
+  atomic(suffix("*", either(qdtext, quotedPair))),
   DQUOTE,
 );
 

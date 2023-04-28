@@ -47,7 +47,7 @@ export function stringifyAuthorization(input: AuthorizationLike): string {
   return [input.authScheme, data].filter(Boolean).join(" ");
 }
 
-const reToken = /^[\w!#$%&'*+.^`|~-]+$/;
+const reToken = /^(?=([\w!#$%&'*+.^`|~-]+))\1$/;
 
 export function assertToken(
   input: string,
@@ -61,7 +61,7 @@ export function isToken(input: string): boolean {
   return reToken.test(input);
 }
 
-const reToken68 = /^[A-Za-z\d+./_~-]+=*$/;
+const reToken68 = /^(?=((?:[A-Za-z]|\d|[+./_~-])+))\1(?=(=*))\2$/;
 
 export function isToken68(input: string): boolean {
   return reToken68.test(input);
@@ -76,7 +76,7 @@ export function assertToken68(
 }
 
 const reQuotedString =
-  /^"(?:\t| |!|[ \x23-\x5B\x5D-\x7E]|[\x80-\xFF]|\\(?:\t| |[\x21-\x7E]|[\x80-\xFF]))*"$/;
+  /^"(?=((?:\t| |!|[ \x23-\x5B\x5D-\x7E]|[\x80-\xFF]|\\(?:\t| |[\x21-\x7E]|[\x80-\xFF]))*))\1"$/;
 
 export function isQuotedString(input: string): boolean {
   return reQuotedString.test(input);

@@ -9,7 +9,7 @@
 [![test](https://github.com/httpland/authorization-parser/actions/workflows/test.yaml/badge.svg)](https://github.com/httpland/authorization-parser/actions/workflows/test.yaml)
 [![NPM](https://nodei.co/npm/@httpland/authorization-parser.png?mini=true)](https://nodei.co/npm/@httpland/authorization-parser/)
 
-HTTP `Authorization` field parser and serializer.
+HTTP Authorization field parser and serializer.
 
 Compliant with
 [RFC 9110, 11.6.2. Authorization](https://www.rfc-editor.org/rfc/rfc9110.html#section-11.6.2).
@@ -26,13 +26,13 @@ const result = parseAuthorization("Basic token68");
 
 assertEquals(parseAuthorization("Basic token68"), {
   authScheme: "Basic",
-  token: "token68",
+  params: "token68",
 });
 assertEquals(
   parseAuthorization(`Bearer realm="example", error="invalid_token"`),
   {
     authScheme: "Bearer",
-    token: {
+    params: {
       realm: `"example"`,
       error: `"invalid_token"`,
     },
@@ -77,14 +77,80 @@ assertThrows(() =>
 );
 ```
 
+## Serialization
+
+Serialize [Authorization](#authorization) into string.
+
+```ts
+import { stringifyAuthorization } from "https://deno.land/x/authorization_parser@$VERSION/stringify.ts";
+import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
+
+assertEquals(
+  stringifyAuthorization({ authScheme: "Basic", params: "token68==" }),
+  "Basic token68",
+);
+assertEquals(
+  stringifyAuthorization({
+    authScheme: "Bearer",
+    params: { realm: `"Secure area"`, error: `"invalid_token"` },
+  }),
+  `Bearer realm="Secure area", error="invalid_token"`,
+);
+```
+
+### Error
+
+Throws an error in the following cases:
+
+- `authScheme` is invalid
+  [auth-scheme](https://www.rfc-editor.org/rfc/rfc9110.html#section-11.1-2)
+- `params` is invalid
+  [token68](https://www.rfc-editor.org/rfc/rfc9110.html#section-11.2-2)
+- `params` key is invalid
+  [token](https://www.rfc-editor.org/rfc/rfc9110.html#section-5.6.2-2)
+- `params` value is invalid
+  [token](https://www.rfc-editor.org/rfc/rfc9110.html#section-5.6.2-2) or
+  [quoted-string](https://www.rfc-editor.org/rfc/rfc9110.html#section-5.6.4-2)
+- There is a duplication in `params` keys(case-insensitive)
+
+```ts
+import { stringifyAuthorization } from "https://deno.land/x/authorization_parser@$VERSION/stringify.ts";
+import { assertThrows } from "https://deno.land/std/testing/asserts.ts";
+
+assertThrows(() =>
+  stringifyAuthorization({ authScheme: "<invalid:auth-scheme>" })
+);
+assertThrows(() =>
+  stringifyAuthorization({ authScheme: "<valid>", params: "<invalid:token68>" })
+);
+assertThrows(() =>
+  stringifyAuthorization({
+    authScheme: "<valid>",
+    params: { "<invalid:token>": "<valid>" },
+  })
+);
+assertThrows(() =>
+  stringifyAuthorization({
+    authScheme: "<valid>",
+    params: { "<valid>": "<invalid:token|quoted-string>" },
+  })
+);
+assertThrows(() =>
+  stringifyAuthorization({
+    authScheme: "<valid>",
+    params: { "<duplicate>": "<valid>", "<DUPLICATE>": "<valid>" },
+  })
+);
+```
+
 ## Authorization
 
 `Authorization` is following structure:
 
-| Name       | Type                                       | Description            |
-| ---------- | ------------------------------------------ | ---------------------- |
-| authScheme | `string`                                   | Authentication scheme. |
-| token      | `Token68` &#124; `AuthParam` &#124; `null` | token68 or auth-param. |
+| Name       | Type                                        | Description            |
+| ---------- | ------------------------------------------- | ---------------------- |
+| authScheme | `string`                                    | Authentication scheme. |
+| params     | `Token68` &#124; `AuthParams` &#124; `null` | token68 or auth-param. |
 
 ### Token68
 
@@ -95,15 +161,23 @@ so that it can hold a base64, base64url (URL and filename safe alphabet),
 base32, or base16 (hex) encoding, with or without padding, but excluding
 whitespace.
 
-### AuthParam
+### AuthParams
 
 It is name/value pairs.
 
 ```ts
-interface AuthParam {
+interface AuthParams {
   readonly [k: string]: string;
 }
 ```
+
+## Compatibility
+
+[parser](#parsing) and [serializer](#serialization) are compatible with
+[RFC 9110, 11.3. Challenge and Response](https://www.rfc-editor.org/rfc/rfc9110.html#section-11.3)
+and
+[RFC 9110, 11.4. Credentials](https://www.rfc-editor.org/rfc/rfc9110.html#section-11.4)
+syntax and can be used in the same way.
 
 ## API
 

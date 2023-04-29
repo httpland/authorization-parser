@@ -1,3 +1,10 @@
+# [1.1.0-beta.1](https://github.com/httpland/authorization-parser/compare/1.0.0...1.1.0-beta.1) (2023-04-29)
+
+
+### Features
+
+* use external validation for token ([1928b53](https://github.com/httpland/authorization-parser/commit/1928b535d796de70988bd792be4d423d8e4ec0e5))
+
 # 1.0.0 (2023-04-28)
 
 

@@ -1,7 +1,7 @@
 // Copyright 2023-latest the httpland authors. All rights reserved. MIT license.
 // This module is browser compatible.
 
-import { isToken, trim } from "./deps.ts";
+import { isToken } from "./deps.ts";
 
 export function duplicate<T>(list: readonly T[]): T[] {
   const duplicates = new Set<T>();
@@ -13,16 +13,6 @@ export function duplicate<T>(list: readonly T[]): T[] {
   });
 
   return [...duplicates];
-}
-
-const reCommaSplitWithoutDQuote = /,(?=(?:(?:[^"]*"){2})*[^"]*$)/;
-
-/** Parse string into list-based field. */
-export function parseList(input: string): string[] {
-  return input
-    .split(reCommaSplitWithoutDQuote)
-    .map(trim)
-    .filter(Boolean);
 }
 
 /**

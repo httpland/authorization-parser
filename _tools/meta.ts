@@ -44,11 +44,6 @@ export const makeOptions = (version: string): BuildOptions => ({
       version: "1.2.0",
       subPath: "to_lower_case.js",
     },
-    "https://deno.land/x/prelude_js@1.2.0/trim.ts": {
-      name: "@miyauci/prelude",
-      version: "1.2.0",
-      subPath: "trim.js",
-    },
     "https://deno.land/x/prelude_js@1.2.0/head.ts": {
       name: "@miyauci/prelude",
       version: "1.2.0",
@@ -64,15 +59,20 @@ export const makeOptions = (version: string): BuildOptions => ({
       version: "1.3.1",
       subPath: "is_nullable.js",
     },
-    "https://deno.land/x/http_utils@1.1.0/quoted_string.ts": {
+    "https://deno.land/x/http_utils@1.2.0/quoted_string.ts": {
       name: "@httpland/http-utils",
-      version: "1.1.0",
+      version: "1.2.0",
       subPath: "quoted_string.js",
     },
-    "https://deno.land/x/http_utils@1.1.0/token.ts": {
+    "https://deno.land/x/http_utils@1.2.0/token.ts": {
       name: "@httpland/http-utils",
-      version: "1.1.0",
+      version: "1.2.0",
       subPath: "token.js",
+    },
+    "https://deno.land/x/http_utils@1.2.0/list.ts": {
+      name: "@httpland/http-utils",
+      version: "1.2.0",
+      subPath: "list.js",
     },
   },
 });

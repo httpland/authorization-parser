@@ -67,10 +67,4 @@ if (import.meta.main) {
   console.log("challenge:", optimize(challenge).toRegExp());
   console.log("element: ", element);
   console.log("authParam: ", optimize(authParam).toRegExp());
-  console.log("token: ", optimize(token).toRegExp());
-  console.log("token68: ", optimize(token68).toRegExp());
-  console.log(
-    "quoted-string: ",
-    optimize(quotedString).toRegExp(),
-  );
 }

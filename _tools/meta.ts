@@ -64,5 +64,15 @@ export const makeOptions = (version: string): BuildOptions => ({
       version: "1.3.1",
       subPath: "is_nullable.js",
     },
+    "https://deno.land/x/http_utils@1.1.0/quoted_string.ts": {
+      name: "@httpland/http-utils",
+      version: "1.1.0",
+      subPath: "quoted_string.js",
+    },
+    "https://deno.land/x/http_utils@1.1.0/token.ts": {
+      name: "@httpland/http-utils",
+      version: "1.1.0",
+      subPath: "token.js",
+    },
   },
 });

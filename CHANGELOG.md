@@ -1,3 +1,10 @@
+# [1.1.0-beta.3](https://github.com/httpland/authorization-parser/compare/1.1.0-beta.2...1.1.0-beta.3) (2023-05-02)
+
+
+### Performance Improvements
+
+* **parse:** optimize regex pattern ([b86dcd6](https://github.com/httpland/authorization-parser/commit/b86dcd6c5a5a8c88fbd0808b0775e5565870bdd0))
+
 # [1.1.0-beta.2](https://github.com/httpland/authorization-parser/compare/1.1.0-beta.1...1.1.0-beta.2) (2023-05-02)
 
 

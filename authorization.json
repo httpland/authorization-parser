@@ -98,6 +98,11 @@
     "must_fail": true
   },
   {
+    "name": "invalid params",
+    "header": "scheme==",
+    "must_fail": true
+  },
+  {
     "name": "token68 and auth param",
     "header": "Basic YWxhZGRpbjpvcGVuc2VzYW1l a=a",
     "must_fail": true

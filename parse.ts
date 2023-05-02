@@ -1,14 +1,18 @@
 // Copyright 2023-latest the httpland authors. All rights reserved. MIT license.
 // This module is browser compatible.
 
-import { duplicate, parseList } from "./utils.ts";
-import { head, isString, toLowerCase } from "./deps.ts";
+import { divideWhile, duplicate, isToken68, trimStartBy } from "./utils.ts";
+import {
+  head,
+  isString,
+  isToken,
+  parseListFields,
+  type QuotedString,
+  type Token,
+  toLowerCase,
+} from "./deps.ts";
 import { Msg } from "./constants.ts";
 import type { Authorization, AuthParams } from "./types.ts";
-
-/** Generate from _abnf.ts. */
-const reAuthorization =
-  /^(?<authScheme>(?=([\w!#$%&'*+.^`|~-]+))\2)(?:(?=( +))\3(?:(?<token68>(?=((?:[A-Za-z]|\d|[+./_~-])+))\5(?=(=*))\6)|(?<authParam>(?=(.*))\8)))?$/;
 
 /** Parse string into {@link Authorization}.
  *
@@ -39,28 +43,28 @@ const reAuthorization =
  * @throws {Error} If the auth param key is duplicated.
  */
 export function parseAuthorization(input: string): Authorization {
-  const result = reAuthorization.exec(input);
+  const result = divideWhile(input, isToken);
 
-  if (!result || !result.groups) throw SyntaxError(Msg.InvalidSyntax);
+  if (!result) throw new SyntaxError(Msg.InvalidSyntax);
 
-  const groups = result.groups as ParsedGroups;
-  const { authScheme } = groups;
-  const params = isString(groups.authParam)
-    ? parseAuthParams(groups.authParam)
-    : groups.token68;
+  const [authScheme, rest] = result;
 
-  return { authScheme, params: params ?? null };
+  // challenge = auth-scheme
+  if (!rest) return { authScheme, params: null };
+  if (!rest.startsWith(" ")) throw new SyntaxError(Msg.InvalidSyntax);
+
+  const maybeToken68OrAuthParam = trimStartBy(rest, " ");
+
+  // challenge = auth-scheme [ 1*SP ( token68 ) ]
+  if (isToken68(maybeToken68OrAuthParam)) {
+    return { authScheme, params: maybeToken68OrAuthParam };
+  }
+
+  // challenge = auth-scheme [ 1*SP ( #auth-param ) ]
+  const params = parseAuthParams(maybeToken68OrAuthParam);
+
+  return { authScheme, params };
 }
-
-type ParsedGroups = {
-  readonly authScheme: string;
-  readonly token68: string | undefined;
-  readonly authParam: string | undefined;
-};
-
-/** Generate from _abnf.ts. */
-const reAuthParam =
-  /^(?<key>(?=([\w!#$%&'*+.^`|~-]+))\2)[\t ]*=[\t ]*(?:(?<token>(?=([\w!#$%&'*+.^`|~-]+))\4)|(?<quotedString>"(?=((?:\t| |!|[ \x23-\x5B\x5D-\x7E]|[\x80-\xFF]|\\(?:\t| |[\x21-\x7E]|[\x80-\xFF]))*))\6"))$/;
 
 type AuthParamGroups =
   & { key: string }
@@ -69,26 +73,13 @@ type AuthParamGroups =
     quotedString: string;
   });
 
-/** Parse string into {@link AuthParam}.
+/** Parse string into {@link AuthParams}.
  * @throws {SyntaxError} It the input is invalid [auth-param](https://www.rfc-editor.org/rfc/rfc9110.html#section-11.2-5).
  * @throws {Error} If the auth param key is duplicated.
  */
 export function parseAuthParams(input: string): AuthParams {
-  const list = parseList(input);
-
-  const entries = list.map((el) => {
-    const result = reAuthParam.exec(el);
-
-    if (!result || !result.groups) throw SyntaxError(Msg.InvalidSyntax);
-
-    const groups = result.groups as AuthParamGroups;
-    const value = isString(groups.token)
-      ? groups.token
-      : groups.quotedString.replace(/\\(.)/g, "$1");
-
-    return [groups.key, value] as const;
-  });
-
+  const list = parseListFields(input);
+  const entries = list.map(parseAuthParam);
   const duplicates = duplicate(
     entries
       .map<string>(head)
@@ -98,4 +89,26 @@ export function parseAuthParams(input: string): AuthParams {
   if (duplicates.length) throw Error(Msg.DuplicatedKeys);
 
   return Object.fromEntries(entries);
+}
+
+type AuthParam = [key: string, value: Token | QuotedString];
+
+/** Generate from _abnf.ts. */
+const reAuthParam =
+  /^(?<key>[\w!#$%&'*+.^`|~-]+?)[\t ]*?=[\t ]*?(?:(?<token>[\w!#$%&'*+.^`|~-]+?)|(?<quotedString>"(?:[\t !\x23-\x5B\x5D-\x7E\x80-\xFF]|\\[\t \x21-\x7E\x80-\xFF])*?"))$/;
+
+/** Parse string into {@link AuthParam}.
+ * @throws {SyntaxError} It the input is invalid [auth-param](https://www.rfc-editor.org/rfc/rfc9110.html#section-11.2-5).
+ */
+function parseAuthParam(input: string): AuthParam {
+  const result = reAuthParam.exec(input);
+
+  if (!result || !result.groups) throw new SyntaxError(Msg.InvalidSyntax);
+
+  const groups = result.groups as AuthParamGroups;
+  const value = isString(groups.token)
+    ? groups.token as Token
+    : groups.quotedString.replace(/\\(.)/g, "$1") as QuotedString;
+
+  return [groups.key as Token, value];
 }

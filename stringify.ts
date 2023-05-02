@@ -1,8 +1,15 @@
 // Copyright 2023-latest the httpland authors. All rights reserved. MIT license.
 // This module is browser compatible.
 
-import { isNullable, isString, mapValues, toLowerCase } from "./deps.ts";
-import { duplicate } from "./utils.ts";
+import {
+  isNullable,
+  isQuotedString,
+  isString,
+  isToken,
+  mapValues,
+  toLowerCase,
+} from "./deps.ts";
+import { assertToken, assertToken68, duplicate } from "./utils.ts";
 import { Msg } from "./constants.ts";
 import type { Authorization, AuthParams } from "./types.ts";
 
@@ -45,41 +52,6 @@ export function stringifyAuthorization(input: AuthorizationLike): string {
     : stringifyAuthParams(input.params);
 
   return [input.authScheme, data].filter(Boolean).join(" ");
-}
-
-const reToken = /^(?=([\w!#$%&'*+.^`|~-]+))\1$/;
-
-export function assertToken(
-  input: string,
-  msg?: string,
-  constructor: ErrorConstructor = Error,
-): asserts input {
-  if (!isToken(input)) throw new constructor(msg);
-}
-
-export function isToken(input: string): boolean {
-  return reToken.test(input);
-}
-
-const reToken68 = /^(?=((?:[A-Za-z]|\d|[+./_~-])+))\1(?=(=*))\2$/;
-
-export function isToken68(input: string): boolean {
-  return reToken68.test(input);
-}
-
-export function assertToken68(
-  input: string,
-  msg?: string,
-  constructor: ErrorConstructor = Error,
-): asserts input {
-  if (!isToken68(input)) throw new constructor(msg);
-}
-
-const reQuotedString =
-  /^"(?=((?:\t| |!|[ \x23-\x5B\x5D-\x7E]|[\x80-\xFF]|\\(?:\t| |[\x21-\x7E]|[\x80-\xFF]))*))\1"$/;
-
-export function isQuotedString(input: string): boolean {
-  return reQuotedString.test(input);
 }
 
 function assertAuthParam(input: AuthParams): asserts input {

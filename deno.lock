@@ -1,6 +1,11 @@
 {
   "version": "2",
   "remote": {
+    "https://deno.land/std@0.182.0/_util/asserts.ts": "178dfc49a464aee693a7e285567b3d0b555dc805ff490505a8aae34f9cfb1462",
+    "https://deno.land/std@0.182.0/path/_constants.ts": "e49961f6f4f48039c0dfed3c3f93e963ca3d92791c9d478ac5b43183413136e0",
+    "https://deno.land/std@0.182.0/path/_interface.ts": "6471159dfbbc357e03882c2266d21ef9afdb1e4aa771b0545e90db58a0ba314b",
+    "https://deno.land/std@0.182.0/path/_util.ts": "d7abb1e0dea065f427b89156e28cdeb32b045870acdf865833ba808a73b576d0",
+    "https://deno.land/std@0.182.0/path/win32.ts": "d186344e5583bcbf8b18af416d13d82b35a317116e6460a5a3953508c3de5bba",
     "https://deno.land/std@0.184.0/collections/map_values.ts": "431b78fd770c72cc978ca7bbfa08cdc0805e69c7d2b69ad19859e093467bd46d",
     "https://deno.land/std@0.184.0/fmt/colors.ts": "d67e3cd9f472535241a8e410d33423980bec45047e343577554d3356e1f0ef4e",
     "https://deno.land/std@0.184.0/testing/_diff.ts": "1a3c044aedf77647d6cac86b798c6417603361b66b54c53331b312caeb447aea",
@@ -23,9 +28,12 @@
     "https://deno.land/x/prelude_js@1.2.0/head.ts": "8f5908cd5cc03ef783feff0d0373371e239237f6a6fd2e1849cd6dc3d4d609b3",
     "https://deno.land/x/prelude_js@1.2.0/to_lower_case.ts": "869038443b99f156649dafe8c05f69b8c7168e22ba64c37f57042b11ebaf47e0",
     "https://deno.land/x/prelude_js@1.2.0/trim.ts": "9e839053220bee1c5673026ccf4ddba475c3b982b3284b1d6b86e5440821de61",
+    "https://esm.sh/escape-string-regexp@5.0.0?pin=v118": "f22d0ca59eaf2376b65491519a8ed9a4043fb60adb6af06edde0f4612642c18e",
     "https://esm.sh/regexp-tree@0.1.24": "1437d92d95a251dee14d4d2778b858bd9e79816de07aaa476aa79d3c438fdb28",
     "https://esm.sh/v111/regexp-tree@0.1.24/deno/regexp-tree.js": "8852058d611171b20693f4072d5db05f29ec3c258bef374be2cd4c1068d1093f",
-    "https://esm.sh/v111/regexp-tree@0.1.24/index.d.ts": "0b031cbe365b1ae93f28b9dd2b809d8b0202f29f6964dffd541d0ad0507f0377"
+    "https://esm.sh/v111/regexp-tree@0.1.24/index.d.ts": "0b031cbe365b1ae93f28b9dd2b809d8b0202f29f6964dffd541d0ad0507f0377",
+    "https://esm.sh/v118/escape-string-regexp@5.0.0/deno/escape-string-regexp.mjs": "2fff2bb22b972451b372a06cb22abde34de4bfdc0e20ec43741021e7fde4c8b5",
+    "https://esm.sh/v118/escape-string-regexp@5.0.0/index.d.ts": "6049d315e1aa3f39a48f06cbccd77dbe2d85dc28e79638dd91adc37280c6d97e"
   },
   "npm": {
     "specifiers": {

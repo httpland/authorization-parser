@@ -1,14 +1,16 @@
 // Copyright 2023-latest the httpland authors. All rights reserved. MIT license.
 // This module is browser compatible.
 
-import { duplicate } from "./utils.ts";
-import { head, isString, parseListFields, toLowerCase } from "./deps.ts";
+import { divideWhile, duplicate, isToken68, trimStartBy } from "./utils.ts";
+import {
+  head,
+  isString,
+  isToken,
+  parseListFields,
+  toLowerCase,
+} from "./deps.ts";
 import { Msg } from "./constants.ts";
 import type { Authorization, AuthParams } from "./types.ts";
-
-/** Generate from _abnf.ts. */
-const reAuthorization =
-  /^(?<authScheme>(?=([\w!#$%&'*+.^`|~-]+))\2)(?:(?=( +))\3(?:(?<token68>(?=((?:[A-Za-z]|\d|[+./_~-])+))\5(?=(=*))\6)|(?<authParam>(?=(.*))\8)))?$/;
 
 /** Parse string into {@link Authorization}.
  *
@@ -39,24 +41,28 @@ const reAuthorization =
  * @throws {Error} If the auth param key is duplicated.
  */
 export function parseAuthorization(input: string): Authorization {
-  const result = reAuthorization.exec(input);
+  const result = divideWhile(input, isToken);
 
-  if (!result || !result.groups) throw SyntaxError(Msg.InvalidSyntax);
+  if (!result) throw new SyntaxError(Msg.InvalidSyntax);
 
-  const groups = result.groups as ParsedGroups;
-  const { authScheme } = groups;
-  const params = isString(groups.authParam)
-    ? parseAuthParams(groups.authParam)
-    : groups.token68;
+  const [authScheme, rest] = result;
 
-  return { authScheme, params: params ?? null };
+  // challenge = auth-scheme
+  if (!rest) return { authScheme, params: null };
+  if (!rest.startsWith(" ")) throw new SyntaxError(Msg.InvalidSyntax);
+
+  const maybeToken68OrAuthParam = trimStartBy(rest, " ");
+
+  // challenge = auth-scheme [ 1*SP ( token68 ) ]
+  if (isToken68(maybeToken68OrAuthParam)) {
+    return { authScheme, params: maybeToken68OrAuthParam };
+  }
+
+  // challenge = auth-scheme [ 1*SP ( #auth-param ) ]
+  const params = parseAuthParams(maybeToken68OrAuthParam);
+
+  return { authScheme, params };
 }
-
-type ParsedGroups = {
-  readonly authScheme: string;
-  readonly token68: string | undefined;
-  readonly authParam: string | undefined;
-};
 
 /** Generate from _abnf.ts. */
 const reAuthParam =
@@ -79,7 +85,7 @@ export function parseAuthParams(input: string): AuthParams {
   const entries = list.map((el) => {
     const result = reAuthParam.exec(el);
 
-    if (!result || !result.groups) throw SyntaxError(Msg.InvalidSyntax);
+    if (!result || !result.groups) throw new SyntaxError(Msg.InvalidSyntax);
 
     const groups = result.groups as AuthParamGroups;
     const value = isString(groups.token)

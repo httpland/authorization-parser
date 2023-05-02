@@ -10,25 +10,7 @@ import { optimize } from "https://esm.sh/regexp-tree";
 
 const tchar = /[!#$%&'*+.^_`|~\dA-Za-z-]/;
 const token = atomic(suffix("+", tchar));
-const authScheme = namedCapture("authScheme", token);
 const SP = / /;
-const ALPHA = /[A-Za-z]/;
-const DIGIT = /\d/;
-const token68 = sequence(
-  atomic(suffix("+", either(ALPHA, DIGIT, /[-._~+/]/))),
-  atomic(suffix("*", "=")),
-);
-
-const challenge = sequence(
-  authScheme,
-  maybe(
-    atomic(suffix("+", SP)),
-    either(
-      namedCapture("token68", token68),
-      namedCapture("authParam", atomic(/.*/)),
-    ),
-  ),
-);
 
 const OWS = /[ \t]*/;
 const BWS = OWS;
@@ -64,7 +46,6 @@ const authParam = sequence(
 );
 
 if (import.meta.main) {
-  console.log("challenge:", optimize(challenge).toRegExp());
   console.log("element: ", element);
   console.log("authParam: ", optimize(authParam).toRegExp());
 }

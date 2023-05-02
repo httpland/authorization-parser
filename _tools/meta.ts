@@ -74,5 +74,9 @@ export const makeOptions = (version: string): BuildOptions => ({
       version: "1.2.0",
       subPath: "list.js",
     },
+    "https://esm.sh/escape-string-regexp@5.0.0?pin=v118": {
+      name: "escape-string-regexp",
+      version: "5.0.0",
+    },
   },
 });

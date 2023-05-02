@@ -1,6 +1,13 @@
-import { assertToken, assertToken68, isToken68 } from "./utils.ts";
+import {
+  assertToken,
+  assertToken68,
+  divideWhile,
+  isToken68,
+  trimStartBy,
+} from "./utils.ts";
 import {
   assert,
+  assertEquals,
   assertFalse,
   assertThrows,
   describe,
@@ -66,5 +73,47 @@ describe("assertToken", () => {
   it("should throw error if the input is invalid token", () => {
     assertThrows(() => assertToken(""));
     assertThrows(() => assertToken("a=="));
+  });
+});
+
+describe("divideWhile", () => {
+  it("should return null if the input does not match", () => {
+    assertEquals(divideWhile("", () => false), null);
+    assertEquals(divideWhile("a", () => false), null);
+    assertEquals(divideWhile("abc", (str) => str === "b"), null);
+  });
+
+  it("should return null if the input does not match", () => {
+    assertEquals(divideWhile("abc", (str) => str === "a"), ["a", "bc"]);
+    assertEquals(divideWhile("abcCBA", (str) => /[a-z]/.test(str)), [
+      "abc",
+      "CBA",
+    ]);
+    assertEquals(
+      divideWhile("あabc亜", (str) => /[a-z]/.test(str) || str === "あ"),
+      [
+        "あabc",
+        "亜",
+      ],
+    );
+    assertEquals(divideWhile("abcCBA", (str) => /.*/.test(str)), [
+      "abcCBA",
+      "",
+    ]);
+  });
+});
+
+describe("trimStartBy", () => {
+  it("should return trimmed string", () => {
+    const table: [string, string, string][] = [
+      ["abc", "a", "bc"],
+      ["abcdefg", "abc", "defg"],
+      ["abcdefg", "aaa", "abcdefg"],
+      ["\\\\abc", "\\", "abc"],
+    ];
+
+    table.forEach(([input, separator, expected]) => {
+      assertEquals(trimStartBy(input, separator), expected);
+    });
   });
 });

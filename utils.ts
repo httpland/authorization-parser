@@ -1,7 +1,7 @@
 // Copyright 2023-latest the httpland authors. All rights reserved. MIT license.
 // This module is browser compatible.
 
-import { isToken } from "./deps.ts";
+import { escapeStringRegExp, isToken } from "./deps.ts";
 
 export function duplicate<T>(list: readonly T[]): T[] {
   const duplicates = new Set<T>();
@@ -44,4 +44,29 @@ export function assertToken(
   constructor: ErrorConstructor = Error,
 ): asserts input {
   if (!isToken(input)) throw new constructor(msg);
+}
+
+/** Divide two string. The first string is matched, second string is rest. */
+export function divideWhile(
+  input: string,
+  match: (input: string) => boolean,
+): [matched: string, rest: string] | null {
+  let matched = "";
+
+  for (const str of input) {
+    if (!match(str)) break;
+
+    matched += str;
+  }
+
+  if (!matched) return null;
+
+  const rest = input.slice(matched.length);
+
+  return [matched, rest];
+}
+
+/** Trim start by something. */
+export function trimStartBy(input: string, separator: string): string {
+  return input.replace(new RegExp(`^${escapeStringRegExp(separator)}+`), "");
 }

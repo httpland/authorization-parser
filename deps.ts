@@ -9,3 +9,4 @@ export { mapValues } from "https://deno.land/std@0.184.0/collections/map_values.
 export { isQuotedString } from "https://deno.land/x/http_utils@1.2.0/quoted_string.ts";
 export { isToken } from "https://deno.land/x/http_utils@1.2.0/token.ts";
 export { parseListFields } from "https://deno.land/x/http_utils@1.2.0/list.ts";
+export { default as escapeStringRegExp } from "https://esm.sh/escape-string-regexp@5.0.0?pin=v118";

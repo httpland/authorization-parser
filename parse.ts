@@ -95,7 +95,7 @@ type AuthParam = [key: string, value: Token | QuotedString];
 
 /** Generate from _abnf.ts. */
 const reAuthParam =
-  /^(?<key>[\w!#$%&'*+.^`|~-]+?)[\t ]*?=[\t ]*?(?:(?<token>[\w!#$%&'*+.^`|~-]+?)|(?<quotedString>"(?:\t| |!|[ \x23-\x5B\x5D-\x7E]|[\x80-\xFF]|\\(?:\t| |[\x21-\x7E]|[\x80-\xFF]))*?"))$/;
+  /^(?<key>[\w!#$%&'*+.^`|~-]+?)[\t ]*?=[\t ]*?(?:(?<token>[\w!#$%&'*+.^`|~-]+?)|(?<quotedString>"(?:[\t !\x23-\x5B\x5D-\x7E\x80-\xFF]|\\[\t \x21-\x7E\x80-\xFF])*?"))$/;
 
 /** Parse string into {@link AuthParam}.
  * @throws {SyntaxError} It the input is invalid [auth-param](https://www.rfc-editor.org/rfc/rfc9110.html#section-11.2-5).

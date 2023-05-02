@@ -1,3 +1,11 @@
+# [1.1.0-beta.2](https://github.com/httpland/authorization-parser/compare/1.1.0-beta.1...1.1.0-beta.2) (2023-05-02)
+
+
+### Performance Improvements
+
+* **parse:** remove complex regex pattern ([dbed45b](https://github.com/httpland/authorization-parser/commit/dbed45bc16066302a38393292fd5906641a94223))
+* **parse:** simplify regex pattern ([9af9114](https://github.com/httpland/authorization-parser/commit/9af9114094ff5afe406a0bcda4437fa646b49ef2))
+
 # [1.1.0-beta.1](https://github.com/httpland/authorization-parser/compare/1.0.0...1.1.0-beta.1) (2023-04-29)
 
 

@@ -1,3 +1,17 @@
+# [1.1.0](https://github.com/httpland/authorization-parser/compare/1.0.0...1.1.0) (2023-05-02)
+
+
+### Features
+
+* use external validation for token ([1928b53](https://github.com/httpland/authorization-parser/commit/1928b535d796de70988bd792be4d423d8e4ec0e5))
+
+
+### Performance Improvements
+
+* **parse:** optimize regex pattern ([b86dcd6](https://github.com/httpland/authorization-parser/commit/b86dcd6c5a5a8c88fbd0808b0775e5565870bdd0))
+* **parse:** remove complex regex pattern ([dbed45b](https://github.com/httpland/authorization-parser/commit/dbed45bc16066302a38393292fd5906641a94223))
+* **parse:** simplify regex pattern ([9af9114](https://github.com/httpland/authorization-parser/commit/9af9114094ff5afe406a0bcda4437fa646b49ef2))
+
 # [1.1.0-beta.3](https://github.com/httpland/authorization-parser/compare/1.1.0-beta.2...1.1.0-beta.3) (2023-05-02)
 
 
